@@ -1,0 +1,145 @@
+import java.util.HashMap;
+import java.util.InputMismatchException;
+import java.util.Map;
+import java.util.Scanner;
+
+public class Main { 
+
+    private static final int FULL_MARK = 100;
+    private static final int TOTAL_SUBJECTS = 5;
+    private static final String[] SUBJECT_NAMES = {"English", "Tamil", "Maths", "Physics", "Chemistry"};
+    private static final String[] CUT_OFF_SUBJECTS = {"Physics", "Chemistry", "Maths"};
+    private static final int CUT_OFF_MAX_MARKS = 200;
+
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        Student student = getStudentDetails(scanner);
+        Map<String, Integer> subjectMarks = getSubjectMarks(scanner, SUBJECT_NAMES);
+
+        if (subjectMarks.size() == TOTAL_SUBJECTS) {
+            displayPerformanceReport(student, subjectMarks);
+            calculateAndDisplayCutOff(student, subjectMarks);
+        } else {
+            System.out.println("\nError: Could not retrieve marks for all required subjects. Exiting.");
+        }
+
+        scanner.close();
+    }
+
+    private static Student getStudentDetails(Scanner scanner) {
+        System.out.println("----- Enter Student Details -----");
+        System.out.print("Name: ");
+        String name = scanner.nextLine();
+        String rollNumber;
+        while (true) {
+            System.out.print("Roll Number: ");
+            rollNumber = scanner.nextLine();
+            if (!rollNumber.trim().isEmpty()) {
+                break;
+            }
+            System.out.println("Roll number cannot be empty. Please enter again.");
+        }
+        return new Student(name, rollNumber);
+    }
+
+    private static Map<String, Integer> getSubjectMarks(Scanner scanner, String[] subjectNames) {
+        Map<String, Integer> marks = new HashMap<>();
+        System.out.println("\n----- Enter Subject Marks (out of " + FULL_MARK + ") -----");
+        for (String subject : subjectNames) {
+            int mark;
+            while (true) {
+                System.out.print("Enter marks for " + subject + ": ");
+                try {
+                    mark = scanner.nextInt();
+                    if (mark >= 0 && mark <= FULL_MARK) {
+                        marks.put(subject, mark);
+                        break;
+                    } else {
+                        System.out.println("Invalid marks. Please enter a value between 0 and " + FULL_MARK + ".");
+                    }
+                } catch (InputMismatchException e) {
+                    System.out.println("Invalid input. Please enter a numeric value for marks.");
+                    scanner.next(); // Consume the invalid input
+                }
+            }
+            scanner.nextLine(); // Consume the newline character
+        }
+        return marks;
+    }
+
+    private static void displayPerformanceReport(Student student, Map<String, Integer> subjectMarks) {
+        System.out.println("\n----- Student Performance Report -----");
+        System.out.println("Name: " + student.getName());
+        System.out.println("Roll Number: " + student.getRollNumber());
+
+        System.out.println("\n--- Subject Marks ---");
+        int totalMarks = 0;
+        for (Map.Entry<String, Integer> entry : subjectMarks.entrySet()) {
+            System.out.println(entry.getKey() + ": " + entry.getValue() + " / " + FULL_MARK);
+            totalMarks += entry.getValue();
+        }
+
+        double averagePercentage = (double) totalMarks / (subjectMarks.size() * FULL_MARK) * 100;
+        String grade = calculateGrade(averagePercentage);
+
+        System.out.println("\nTotal Marks: " + totalMarks + " / " + (subjectMarks.size() * FULL_MARK));
+        System.out.printf("Average Percentage: %.2f%%\n", averagePercentage);
+        System.out.println("Overall Grade: " + grade);
+    }
+
+    private static String calculateGrade(double percentage) {
+        if (percentage >= 90) {
+            return "A+";
+        } else if (percentage >= 80) {
+            return "A";
+        } else if (percentage >= 70) {
+            return "B";
+        } else if (percentage >= 60) {
+            return "C";
+        } else if (percentage >= 50) {
+            return "D";
+        } else {
+            return "Fail";
+        }
+    }
+
+    private static void calculateAndDisplayCutOff(Student student, Map<String, Integer> subjectMarks) {
+        System.out.println("\n----- Cut-off Calculation (Physics, Chemistry, Maths) -----");
+        Integer physicsMark = subjectMarks.get(CUT_OFF_SUBJECTS[0]);
+        Integer chemistryMark = subjectMarks.get(CUT_OFF_SUBJECTS[1]);
+        Integer mathsMark = subjectMarks.get(CUT_OFF_SUBJECTS[2]);
+
+        if (physicsMark != null && chemistryMark != null && mathsMark != null) {
+            double cutOff = (double) (physicsMark + chemistryMark) / 2.0 + mathsMark;
+            double cutOffPercentage = (cutOff / CUT_OFF_MAX_MARKS) * 100;
+
+            System.out.println("Name: " + student.getName());
+            System.out.println("Roll Number: " + student.getRollNumber());
+            System.out.println("Physics: " + physicsMark + " / " + FULL_MARK);
+            System.out.println("Chemistry: " + chemistryMark + " / " + FULL_MARK);
+            System.out.println("Maths: " + mathsMark + " / " + FULL_MARK);
+            System.out.println("Cut-off Marks: " + cutOff + " / " + CUT_OFF_MAX_MARKS);
+            System.out.printf("Cut-off Percentage: %.2f%%\n", cutOffPercentage);
+        } else {
+            System.out.println("Warning: Marks for Physics, Chemistry, or Maths not found. Cut-off calculation skipped.");
+        }
+    }
+}
+
+class Student {
+    private String name;
+    private String rollNumber;
+
+    public Student(String name, String rollNumber) {
+        this.name = name;
+        this.rollNumber = rollNumber;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getRollNumber() {
+        return rollNumber;
+    }
+}
