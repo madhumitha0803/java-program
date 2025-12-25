@@ -1,0 +1,87 @@
+import java.util.ArrayList;
+import java.util.Scanner;
+
+class Student {
+    String name;
+    ArrayList<Integer> marks;
+
+    Student(String name) {
+        this.name = name;
+        this.marks = new ArrayList<>();
+    }
+
+    int getTotalMarks() {
+        int total = 0;
+        for (int mark : marks) {
+            total += mark;
+        }
+        return total;
+    }
+
+    double getAverageMarks() {
+        if (marks.isEmpty()) {
+            return 0;
+        }
+        return (double) getTotalMarks() / marks.size();
+    }
+}
+
+public class Main {
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        ArrayList<Student> students = new ArrayList<>();
+
+        while (true) {
+            System.out.println("\n--- Student Mark List Menu ---");
+            System.out.println("1. Add Student and Marks");
+            System.out.println("2. View Student Mark List");
+            System.out.println("3. Exit");
+            System.out.print("Choose an option: ");
+
+            int option = scanner.nextInt();
+            scanner.nextLine(); 
+            switch (option) {
+                case 1:
+                    System.out.print("Enter student name: ");
+                    String name = scanner.nextLine();
+                    Student student = new Student(name);
+
+                    System.out.print("How many subjects? ");
+                    int subjectCount = scanner.nextInt();
+
+                    for (int i = 1; i <= subjectCount; i++) {
+                        System.out.print("Enter marks for subject " + i + ": ");
+                        int mark = scanner.nextInt();
+                        student.marks.add(mark);
+                    }
+
+                    students.add(student);
+                    System.out.println("Student added successfully!");
+                    break;
+
+                case 2:
+                    System.out.println("\n--- Student Mark List ---");
+                    if (students.isEmpty()) {
+                        System.out.println("No student records available.");
+                    } else {
+                        for (Student s : students) {
+                            System.out.println("Name: " + s.name);
+                            System.out.println("Marks: " + s.marks);
+                            System.out.println("Total Marks: " + s.getTotalMarks());
+                            System.out.printf("Average Marks: %.2f\n", s.getAverageMarks());
+                            System.out.println("-----------------------------");
+                        }
+                    }
+                    break;
+
+                case 3:
+                    System.out.println("Exiting... Goodbye!");
+                    scanner.close();
+                    System.exit(0);
+
+                default:
+                    System.out.println("Invalid option. Try again!");
+            }
+        }
+    }
+}
