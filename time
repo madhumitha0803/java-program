@@ -1,0 +1,39 @@
+import java.util.*;
+public class Main
+{
+	public static void main(String[] args) 
+	{
+	    Scanner sc = new Scanner(System.in);
+	    String str = sc.nextLine(); 
+	    String arr[] = str.split(" "); 
+	                                    
+	    String time[] = arr[0].split(":"); 
+	                                     
+	                                           
+	   if(arr[1].equals("AM"))
+	   {
+	       if(time[0].equals("12"))
+	       {
+	           System.out.print("00" + time[1] + time[2]);
+	       }
+	       else
+	       {
+	           System.out.print(time[0] + time[1] + time[2]);
+	       }
+	   }
+	   else
+	   {
+	       if(time[0].equals("12"))
+	       {
+	           System.out.print(time[0] + time[1] + time[2]);
+	       }
+	       else
+	       {
+	       int g = Integer.parseInt(time[0]) + 12;
+	       System.out.print(g + time[1] + time[2]);
+	       }
+	   }
+
+	    
+	}
+}
