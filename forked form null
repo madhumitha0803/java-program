@@ -1,0 +1,69 @@
+import java.util.*;
+public class Main
+{
+    static int flag=0;
+    public static boolean safe(int n, int m, int arr[][], int i, int j)
+    {
+        if(i>=0 && i<n && j>=0 && j<m && (arr[i][j] == 1 || arr[i][j]==9))
+        {
+            return true;
+        }
+        return false;
+    }
+    public static void solve(int n, int m, int arr[][], int i, int j)
+    {
+        if(arr[i][j] == 9)
+        {
+            flag=1;
+            return;
+        }
+        else
+        {
+            arr[i][j]=2;
+            
+            if(safe(n,m,arr, i-1, j))
+            {
+                solve(n,m,arr, i-1, j);
+            }
+            // right
+            if(safe(n,m,arr, i, j+1))
+            {
+                solve(n,m,arr, i, j+1);
+            }
+            // down
+            if(safe(n,m,arr, i+1, j))
+            {
+                solve(n,m,arr, i+1, j);
+            }
+            // left
+            if(safe(n,m,arr, i, j-1))
+            {
+                solve(n,m,arr, i, j-1);
+            }
+        }
+    }
+	public static void main(String[] args) 
+	{
+	    Scanner sc = new Scanner(System.in);
+	    int n = sc.nextInt();
+	    int m = sc.nextInt();
+	    int arr[][] = new int[n][m];
+	    for(int i=0;i<n;i++)
+	    {
+	        for(int j=0;j<m;j++)
+	        {
+	            arr[i][j] = sc.nextInt();
+	        }
+	    }
+	    solve(n,m,arr,0,0);
+	    if(flag==1)
+	    {
+	        System.out.print("True");
+	    }
+	    else
+	    {
+	        System.out.print("False");
+	    }
+	    
+	}
+}
