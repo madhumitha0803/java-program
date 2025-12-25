@@ -1,0 +1,78 @@
+import java.util.*;
+
+class AadhaarCard {
+    private String Name;
+    private int Age;
+    private String Address;
+
+    public AadhaarCard(String name, int age, String address)
+    {
+        this.Name = name;
+        this.Age = age;
+        this.Address = address;
+    }
+
+    public String getName()
+    {
+        return Name;
+    }
+
+    public void setName(String Name)
+    {
+        this.Name = Name;
+    }
+
+    public int getAge() 
+    {
+        return Age;
+    }
+
+    public void setAge(int Age)
+    {
+        this.Age = Age;
+    }
+
+    public String getAddress() 
+    {
+        return Address;
+    }
+
+    public void setAddress(String Address)
+    {
+        this.Address = Address;
+    }
+}
+
+public class Main {
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+
+        AadhaarCard person1 = new AadhaarCard("siva", 25, "chennai");
+        AadhaarCard person2 = new AadhaarCard("hari", 26, "madurai");
+        AadhaarCard person3 = new AadhaarCard("abi", 24, "kovai");
+        AadhaarCard person4 = new AadhaarCard("arun", 30, "chennai");
+        AadhaarCard person5 = new AadhaarCard("aravind", 35, "Bangalore");
+
+        
+        AadhaarCard[] arr = new AadhaarCard[5];
+        arr[0] = person1;
+        arr[1] = person2;
+        arr[2] = person3;
+        arr[3] = person4;
+        arr[4] = person5;
+
+        
+        String user_name = sc.next();
+
+        
+        for (int i = 0; i < 5; i++) {
+            AadhaarCard current_person = arr[i];
+            if (current_person.getName().equalsIgnoreCase(user_name)) {
+                System.out.println("Name: " + current_person.getName());
+                System.out.println("Age: " + current_person.getAge());
+                System.out.println("Address: " + current_person.getAddress());
+            }
+        }
+
+    }
+}
