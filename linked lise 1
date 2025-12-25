@@ -1,0 +1,147 @@
+import java.util.*;
+class Node 
+{
+  int data;
+  Node next;
+  public Node(int data)
+  {
+      this.data = data;
+      this.next = null;
+  }
+}
+class LinkedList
+{
+    public Node head = null;
+    int size =0;
+    public void insertAtEnd(int data)
+    {
+        Node z = new Node(data);
+        if(head == null)
+        {
+            head = z;
+        }
+        else
+        {
+            Node temp = head;
+            while(temp.next != null)
+            {
+                temp = temp.next;
+            }
+            temp.next =z;
+        }
+        size++;
+    }
+    public void insertAtBegin(int data)
+    {
+        Node z = new Node(data);
+        if(head == null)
+        {
+            head = z;
+        }
+        else
+        {
+            z.next=head;
+            head = z;
+        }
+        size++;
+    }
+    public void insertAtPos(int data,int pos)
+    {
+       Node z = new Node(data);
+       if(pos == 1)
+       {
+           insertAtBegin(data);
+       }
+       else
+       {
+           Node temp = head;
+           for(int i=0;i<pos-2;i++)
+           {
+               temp = temp.next;
+           }
+           z.next = temp.next;
+           temp.next = z;
+       }
+       size++;
+    }
+    public void delAtbegin()
+    {
+        if(head == null)
+        {
+            System.out.print("LL is Empty");
+        }
+        else
+        {
+            head = head.next;
+        }
+        size--;
+    }
+    public void delAtEnd()
+    {
+        if(head == null)
+        {
+            System.out.print("LL is Empty");
+        }
+        else
+        {
+            Node temp = head;
+            
+            while(temp.next.next !=null)
+            {
+                temp = temp.next;
+            }
+            temp.next = null;
+            size--;
+        }
+    }
+    public void delAtPos(int pos)
+    {
+        if(size >= pos)
+        {
+            Node temp = head;
+            for(int i=0;i<pos-2;i++)
+            {
+                temp = temp.next;
+            }
+            temp.next = temp.next.next;
+            size--;
+        }
+        else
+        {
+            System.out.println("Not possible");
+        }
+    }
+    public void display()
+    {
+        Node temp = head;
+        while(temp != null)
+        {
+            System.out.print(temp.data+" ");
+            temp = temp.next;
+        }
+        System.out.println();
+    }
+}
+
+public class Main
+{
+	public static void main(String[] args) {
+		Scanner sc = new Scanner(System.in);
+		LinkedList ob = new LinkedList();
+		ob.insertAtEnd(10);
+		ob.insertAtEnd(20);
+		ob.insertAtEnd(30);
+		ob.insertAtEnd(40);
+		ob.display();
+		ob.insertAtBegin(99);
+		ob.display();
+		ob.insertAtPos(999,1);
+		ob.display();
+		ob.delAtbegin();
+		ob.display();
+		ob.delAtEnd();
+		ob.display();
+		ob.delAtPos(3);
+		ob.display();
+	}
+}
